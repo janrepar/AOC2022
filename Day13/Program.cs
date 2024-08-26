@@ -8,7 +8,8 @@ namespace Day13
     {
         static void Main(string[] args)
         {
-            Part1();
+            // Part1();
+            Part2();
         }
 
         public static void Part1()
@@ -41,6 +42,62 @@ namespace Day13
             }
 
             Console.WriteLine("Sum of pairs: " + sumOfPairs);
+        }
+
+        public static void Part2()
+        {
+            // Reading from file and saving input to List
+            List<string> input = new List<string>();
+
+            StreamReader srFile = new StreamReader("C:/Temp/aoc2022_13.txt");
+            while (srFile.EndOfStream == false)
+            {
+                string line = srFile.ReadLine();
+                
+                // Ignore empty lines
+                if (String.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                input.Add(line);
+            }
+            srFile.Close();
+
+            // Add divider packets
+            input.Add("[[2]]");
+            input.Add("[[6]]");
+
+            // Sort the list using the custom Compare function (from part 1)
+            input.Sort((a, b) =>
+            {
+                bool? result = Compare(a, b);
+                if (result == true)
+                {
+                    return -1;
+                }
+                if (result == false)
+                {
+                    return 1;
+                }
+                return 0; 
+            });
+
+            int divider1Index = input.IndexOf("[[2]]") + 1;
+            int divider2Index = input.IndexOf("[[6]]") + 1;
+
+            // Console.WriteLine(divider1Index + " " + divider2Index);
+
+            int result = divider1Index * divider2Index;
+
+            /*
+            foreach (var item in input)
+            {
+                Console.WriteLine(item);
+            }
+            */
+
+            Console.WriteLine("\nDecoder key: " + result);
         }
 
         public static bool? Compare(string packet1, string packet2)
