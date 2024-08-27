@@ -20,7 +20,7 @@
         }
 
         // Part 1 (day 9)
-        public static void Part1 ()
+        public static void Part1()
         {
             // Reading from file and saving input to List
             List<string> input = new List<string>();
