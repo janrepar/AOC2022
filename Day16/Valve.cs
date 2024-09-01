@@ -10,7 +10,12 @@ namespace Day16
     {
         public string Name { get; set; }
         public int FlowRate { get; set; }
-        public bool Opened { get; set; }
-        public HashSet<Valve> tunnelsTo { get; set; }
+        public HashSet<string> TunnelsTo { get; set; } = new HashSet<string>();
+
+        public Valve(string name, int flowRate)
+        {
+            Name = name;
+            FlowRate = flowRate;
+        }
     }
 }
