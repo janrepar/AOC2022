@@ -13,6 +13,7 @@ namespace Day16
     {
         public Dictionary<string, Valve> Valves { get; set; } = new Dictionary<string, Valve>();
         public Dictionary<(string, int, string), int> MemoDic { get; set; } = new Dictionary<(string, int, string), int>();
+        public Dictionary<(string, string, int, string), int> MemoDicElephant { get; set; } = new Dictionary<(string, string, int, string), int>();
 
         public void ParseInput(List<string> input)
         {
@@ -79,6 +80,79 @@ namespace Day16
             // Store result in memoization dictionary
             this.MemoDic[key] = maxPressure;
             
+            Console.WriteLine($"Storing result in dictionary: ({currentPosition}, {timeLeft}, {openedKey}) => {maxPressure}");
+
+            return maxPressure;
+        }
+
+        public int MaxPressureWithElephant(string currentPosition, string elephantPosition, int timeLeft, HashSet<string> openedValves)
+        {
+            // Base case
+            if (timeLeft <= 0)
+            {
+                return 0;
+            }
+
+            // Memoization key
+            string openedKey = openedValves.Count > 0 ? string.Join(",", openedValves.OrderBy(x => x)) : ""; // If ordered it has to check less states than of not ordered -> optimised string concatenation for part 2
+            var key = (currentPosition, elephantPosition, timeLeft, openedKey);
+
+            // Check if the result is already in the memoization dictionary
+            if (this.MemoDicElephant.TryGetValue(key, out int res))
+            {
+                return res;
+            }
+
+            int maxPressure = 0;
+
+            // Both self and the elephant open their valves if possible
+            if (!openedValves.Contains(currentPosition) && !openedValves.Contains(elephantPosition) &&
+                this.Valves[currentPosition].FlowRate > 0 && this.Valves[elephantPosition].FlowRate > 0 &&
+                currentPosition != elephantPosition) // Ensure they are not at the same valve
+            {
+                HashSet<string> newOpenedValves = new HashSet<string>(openedValves) { currentPosition, elephantPosition };
+                int absPressure = (this.Valves[currentPosition].FlowRate + this.Valves[elephantPosition].FlowRate) * (timeLeft - 1);
+                maxPressure = Math.Max(maxPressure, absPressure + MaxPressureWithElephant(currentPosition, elephantPosition, timeLeft - 1, newOpenedValves));
+            }
+
+            // Only self opens the valve if possible
+            if (!openedValves.Contains(currentPosition) && this.Valves[currentPosition].FlowRate > 0)
+            {
+                HashSet<string> newOpenedValves = new HashSet<string>(openedValves) { currentPosition };
+                int absPressure = this.Valves[currentPosition].FlowRate * (timeLeft - 1);
+
+                // Move elephant
+                foreach (string tunnelToElephant in this.Valves[elephantPosition].TunnelsTo)
+                {
+                    maxPressure = Math.Max(maxPressure, absPressure + MaxPressureWithElephant(currentPosition, tunnelToElephant, timeLeft - 1, newOpenedValves));
+                }
+            }
+
+            // Only elephant opens the valve if possible
+            if (!openedValves.Contains(elephantPosition) && this.Valves[elephantPosition].FlowRate > 0)
+            {
+                HashSet<string> newOpenedValves = new HashSet<string>(openedValves) { elephantPosition };
+                int absPressure = this.Valves[elephantPosition].FlowRate * (timeLeft - 1);
+
+                // Move self
+                foreach (string tunnelToPlayer in this.Valves[currentPosition].TunnelsTo)
+                {
+                    maxPressure = Math.Max(maxPressure, absPressure + MaxPressureWithElephant(tunnelToPlayer, elephantPosition, timeLeft - 1, newOpenedValves));
+                }
+            }
+
+            // Both self and the elephant move to connected valves
+            foreach (string tunnelToPlayer in this.Valves[currentPosition].TunnelsTo)
+            {
+                foreach (string tunnelToElephant in this.Valves[elephantPosition].TunnelsTo)
+                {
+                    maxPressure = Math.Max(maxPressure, MaxPressureWithElephant(tunnelToPlayer, tunnelToElephant, timeLeft - 1, new HashSet<string>(openedValves)));
+                }
+            }
+
+            // Store result in memoization dictionary
+            this.MemoDicElephant[key] = maxPressure;
+
             Console.WriteLine($"Storing result in dictionary: ({currentPosition}, {timeLeft}, {openedKey}) => {maxPressure}");
 
             return maxPressure;
