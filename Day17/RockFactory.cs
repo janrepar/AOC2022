@@ -9,7 +9,7 @@ namespace Day17
     public class RockFactory
     {
         // Factory method to create rocks based on type
-        public IRock CreateRock(int rockType, Cave cave)
+        public IRock CreateRock(double rockType, Cave cave)
         {
             IRock rock = rockType switch
             {

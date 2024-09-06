@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Part1();
+            Part1(); // Answer is 3181
             // Part2();
         }
 
@@ -13,7 +13,7 @@
             char[] input = Array.Empty<char>();
 
             // Reading from file and saving input to List
-            StreamReader srFile = new StreamReader("C:/Temp/test.txt");
+            StreamReader srFile = new StreamReader("C:/Temp/aoc2022_17.txt");
             while (srFile.EndOfStream == false)
             {
                 string line = srFile.ReadLine();

@@ -8,7 +8,7 @@ namespace Day17
 {
     public class Cave
     { 
-        public List<Coordinates> Floor { get; set; } = new List<Coordinates>();
+        public HashSet<Coordinates> Floor { get; set; } = new HashSet<Coordinates>();
         public int BaseY => this.Floor.Max(f => f.Y) + 4;
 
         public Cave()
@@ -27,39 +27,60 @@ namespace Day17
             RockFactory factory = new RockFactory(); 
             Cave cave = new Cave();
 
+            int index = 0;
+
             while (rockCount < maxRocks)
             {
                 int rockType = (rockCount % 5) + 1;
 
                 IRock rock = factory.CreateRock(rockType, cave);
                 
-                for (int i = 0; i < input.Length; i++)
+                // Console.WriteLine($"Rock {rockCount + 1} created at: {string.Join(", ", rock.RockShape)}");
+
+                while (true)
                 {
-                    if (input[i] == '>' && rock.RockShape.Max(c => c.X) < 6)
+                    if (index >= input.Length)
                     {
-                        // Move rock to the right
-                        rock.RockFall('>');
-                    }
-                    else if (input[i] == '<' && rock.RockShape.Min(c => c.X) > 0)
-                    {
-                        // Move rock to the left
-                        rock.RockFall('<');
+                        index = 0;
                     }
 
-                    if (rock.RockShape.Any(c => cave.Floor.Contains(c)))
+                    if (input[index] == '>' && rock.RockShape.Max(c => c.X) < 6)
+                    {
+                        if (rock.RockShape.All(c => c.X < 6 && !cave.Floor.Contains(c.Right))) // Check for collision
+                        {
+                            rock.RockFall('>');  // Move rock to the right
+                        }
+                    }
+                    else if (input[index] == '<' && rock.RockShape.Min(c => c.X) > 0)
+                    {
+                        if (rock.RockShape.All(c => c.X > 0 && !cave.Floor.Contains(c.Left))) // Check for collision
+                        {
+                            rock.RockFall('<');  // Move rock to the left
+                        }
+                    }
+                
+                    // Console.WriteLine($"Instruction: {input[index]}, Rock Position After Left or Right Move: {string.Join(", ", rock.RockShape)}");
+
+                    index++;
+
+                    if (rock.RockShape.Any(c => cave.Floor.Contains(c.Down)))
                     {
                         foreach (var c in rock.RockShape)
                         {
                             cave.Floor.Add(c); 
                         }
+                        rockCount++;
                         break; // Exit the loop and start new rockshape
                     }
 
                     rock.RockFall('c');
-                }
 
-                rockCount++;
+                    
+                    // Console.WriteLine($"Rock Position After Fall: {string.Join(", ", rock.RockShape)}");
+                }
             }
+
+            Console.WriteLine($"Tower is {cave.Floor.Max(c => c.Y) + 1} rocks tall!");
         }
     }
 }
