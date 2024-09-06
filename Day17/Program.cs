@@ -10,15 +10,18 @@
 
         public static void Part1()
         {
-            Cave cave = new Cave();
+            char[] input = Array.Empty<char>();
 
-            Rock rock = new RockShape1();
-            rock.GenerateRock(cave);
-
-            foreach (var c in rock.RockShape)
+            // Reading from file and saving input to List
+            StreamReader srFile = new StreamReader("C:/Temp/test.txt");
+            while (srFile.EndOfStream == false)
             {
-                Console.WriteLine(c.ToString());
+                string line = srFile.ReadLine();
+                input = line.ToCharArray();
             }
+            srFile.Close();
+
+            Cave.CaveSimulation(input);
         }
 
         public static void Part2()

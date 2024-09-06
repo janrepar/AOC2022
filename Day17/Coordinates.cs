@@ -13,7 +13,7 @@ namespace Day17
 
         public Coordinates Down => new Coordinates(X, Y - 1);
         public Coordinates Left => new Coordinates(X - 1, Y);
-        public Coordinates Rigth => new Coordinates(X + 1, Y);
+        public Coordinates Right => new Coordinates(X + 1, Y);
 
         public Coordinates(int X, int Y)
         {
