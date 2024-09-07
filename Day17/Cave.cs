@@ -99,7 +99,7 @@ namespace Day17
             long cycleStartRock = 0;
             long cycleHeightDifference = 0;
             long finalHeight = 0;
-            int patternDetected = 3; // Ensures that we check multiple patterns (first pattern doesn't give the right answer)
+            int patternDetected = 5; // Check multiple patterns (first pattern doesn't give the right answer)
 
             while (rockCount < maxRocks)
             {

@@ -12,6 +12,13 @@ namespace Day18
         public int Y { get; set; }
         public int Z { get; set; }
 
+        public Coordinates Down => new Coordinates(X, Y - 1, Z);
+        public Coordinates Up => new Coordinates(X, Y + 1, Z);
+        public Coordinates Left => new Coordinates(X - 1, Y, Z);
+        public Coordinates Right => new Coordinates(X + 1, Y, Z);
+        public Coordinates Forward => new Coordinates(X, Y, Z + 1);
+        public Coordinates Backwards => new Coordinates(X, Y, Z - 1);
+
         public Coordinates(int x, int y, int z)
         {
             this.X = x;
@@ -29,7 +36,21 @@ namespace Day18
 
         public override string ToString()
         {
-            return $"({this.X},{this.Y})";
+            return $"({this.X},{this.Y},{this.Z})";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Coordinates other)
+            {
+                return X == other.X && Y == other.Y && Z == other.Z;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y, Z);
         }
     }
 }
