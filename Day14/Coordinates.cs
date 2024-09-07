@@ -15,10 +15,10 @@ namespace Day14
         public Coordinates DownLeft => new Coordinates(X - 1, Y + 1);
         public Coordinates DownRigth => new Coordinates(X + 1, Y + 1);
 
-        public Coordinates(int X, int Y)
+        public Coordinates(int x, int y)
         {
-            this.X = X;
-            this.Y = Y;
+            this.X = x;
+            this.Y = y;
         }
 
         // Helper method to parse coordinates from input

@@ -15,10 +15,10 @@ namespace Day17
         public Coordinates Left => new Coordinates(X - 1, Y);
         public Coordinates Right => new Coordinates(X + 1, Y);
 
-        public Coordinates(int X, int Y)
+        public Coordinates(int x, int y)
         {
-            this.X = X;
-            this.Y = Y;
+            this.X = x;
+            this.Y = y;
         }
 
         public override string ToString()
