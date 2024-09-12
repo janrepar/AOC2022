@@ -99,7 +99,8 @@ namespace Day17
             long cycleStartRock = 0;
             long cycleHeightDifference = 0;
             long finalHeight = 0;
-            int patternDetected = 5; // Check multiple patterns (first pattern doesn't give the right answer)
+            long rockCountForValid = 0;
+            int patternDetected = 0; // Check multiple patterns (first pattern doesn't give the right answer)
 
             while (rockCount < maxRocks)
             {
@@ -153,7 +154,14 @@ namespace Day17
                             cycleStartRock = previousState.rockCount;
                             cycleHeightDifference = cave.Floor.Max(c => c.Y) - previousState.caveHeight;
                             cycleLength = rockCount - cycleStartRock;
-                            patternDetected--;
+                            
+                            if (previousState.rockCount - rockCountForValid == 1)
+                            {
+                                patternDetected++;
+                            }
+
+                            rockCountForValid = previousState.rockCount;
+
                             break;
                         }
                         else
@@ -167,7 +175,7 @@ namespace Day17
                     rock.RockFall('c');
                 }
 
-                if (patternDetected == 0)
+                if (patternDetected == 100 && patternDetected != 0) // If pattern repeats 100 consecutively it is probable that it is the pattern we are looking for
                 {
                     long remainingRocks = maxRocks - rockCount;
                     long fullCycles = remainingRocks / cycleLength;
