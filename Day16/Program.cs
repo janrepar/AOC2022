@@ -77,18 +77,19 @@ namespace Day16
             int totalValveCount = valveNames.Count;
             int maxPressure = 0;
 
-            // Generate all subsets of valves using bit manipulation
+            // Generate all subsets of valves using bit manipulation (bit shift operator)
             int totalSubsets = 1 << totalValveCount; // 2^totalValveCount
 
+            // Iterate over all possible subsets
             for (int i = 0; i < totalSubsets; i++)
             {
                 HashSet<string> playerOpenedValves = new HashSet<string>();
                 HashSet<string> elephantOpenedValves = new HashSet<string>();
 
-                // Determine which valves are opened by the player based on the bitmask `i`
+                // Determine which valves are opened by the player based on the bitmask `i` (iterate over each valve and assign it to p or e)
                 for (int j = 0; j < totalValveCount; j++)
                 {
-                    if ((i & (1 << j)) != 0)
+                    if ((i & (1 << j)) != 0) // Shifts one bit to the left by j positions and if i & shifted 1 (using bitwise and) is not 0 player opens valve 
                     {
                         playerOpenedValves.Add(valveNames[j]);
                     }

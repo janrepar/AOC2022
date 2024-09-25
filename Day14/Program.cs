@@ -4,8 +4,8 @@
     {
         static void Main(string[] args)
         {
-            // Part1();
-            Part2();
+            Part1();
+            // Part2();
         }
 
         public static void Part1()

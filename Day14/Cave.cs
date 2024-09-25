@@ -36,25 +36,25 @@ namespace Day14
                 {
                     if (sand.SandCoordinates.Y >= this.BottomY)
                     {
-                        abyssReached = true;
+                        abyssReached = true; // Sand falls into abyss
                         break;
                     }
                                     
-                    if (!this.OccupiedCoords.Contains(sand.SandCoordinates.Down))
+                    if (!this.OccupiedCoords.Contains(sand.SandCoordinates.Down)) 
                     {
-                        sand.SandCoordinates = sand.SandCoordinates.Down;
+                        sand.SandCoordinates = sand.SandCoordinates.Down; // Move sand down if not occupied
                     }
                     else if (!this.OccupiedCoords.Contains(sand.SandCoordinates.DownLeft))
                     {
-                        sand.SandCoordinates = sand.SandCoordinates.DownLeft;
+                        sand.SandCoordinates = sand.SandCoordinates.DownLeft; // Move Sand down left if not occupied
                     }
                     else if (!this.OccupiedCoords.Contains(sand.SandCoordinates.DownRigth))
                     {
-                        sand.SandCoordinates = sand.SandCoordinates.DownRigth;
+                        sand.SandCoordinates = sand.SandCoordinates.DownRigth; // Move sand down right if not occupied
                     }
                     else
                     {
-                        endReached = true;
+                        endReached = true; // Sand reached settled position
                         this.SettledSand.Add(sand.SandCoordinates);
                         this.OccupiedCoords.Add(sand.SandCoordinates);
                     }
@@ -66,7 +66,7 @@ namespace Day14
                 // Needed for part 2
                 if (sand.SandCoordinates.Y == sand.StartPosition.Y)
                 {
-                    abyssReached = true;
+                    abyssReached = true; // Reused abyssReachedVariable
                 }
             }
 
@@ -92,6 +92,7 @@ namespace Day14
 
                     rocks.Add(rockStart);
 
+                    // Goes on until differenceX and Y is 0
                     while (true)
                     {
                         // Better solution than if clauses

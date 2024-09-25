@@ -69,7 +69,7 @@ namespace Day16
                 //Console.WriteLine($"Opening valve {currentPosition} with flow rate {this.Valves[currentPosition].FlowRate}. Pressure: {absPressure}, New Time Left: {timeLeft - 2}");
             }
 
-            // Move to connected valves (if any time is left)
+            // Move to connected valves (if any time is left) - explore different paths
             foreach (string tunnelTo in this.Valves[currentPosition].TunnelsTo)
             {
                 maxPressure = Math.Max(maxPressure, MaxPressure(tunnelTo, timeLeft - 1, new HashSet<string>(openedValves)));
