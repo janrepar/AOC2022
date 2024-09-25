@@ -17,7 +17,7 @@ namespace Day13
             // Reading from file and saving input to List
             List<string> input = new List<string>();
 
-            StreamReader srFile = new StreamReader("C:/Temp/aoc2022_13.txt");
+            StreamReader srFile = new StreamReader("C:/Temp/test.txt");
             while (srFile.EndOfStream == false)
             {
                 input.Add(srFile.ReadLine());
@@ -28,6 +28,8 @@ namespace Day13
             int sumOfPairs = 0;
 
             // Skips empty lines in input list
+
+
             for (int i = 0; i < input.Count; i += 3) 
             {
                 bool? c = Compare(input[i], input[i + 1]);
@@ -73,19 +75,19 @@ namespace Day13
             {
                 bool? result = Compare(a, b);
 
-                // a is less than b and should come before b
+                // a is less than b and should come before b (if packets are in correct order a comes before b)
                 if (result == true)
                 {
                     return -1;
                 }
 
-                // b is less than a and should come before a
+                // b is less than a and should come before a (if packets are not in correct order a comes after b)
                 if (result == false)
                 {
                     return 1;
                 }
 
-                // a and b are equal, both stay at pos they are at
+                // a and b are equal, both stay at position they are at
                 return 0; 
             });
 
@@ -111,7 +113,7 @@ namespace Day13
         /// </summary>
         /// <param name="packet1"></param>
         /// <param name="packet2"></param>
-        /// <returns>True if inputs are in the right order. False if inputs are not in the right order. Null if packets are equal.</returns>
+        /// <returns>True if inputs are in the right order. False if inputs are not in the right order. Null if packets are equal (continue checking).</returns>
         public static bool? Compare(string packet1, string packet2)
         {
             // Console.WriteLine($"Compare: {packet1} | {packet2}");
@@ -154,13 +156,13 @@ namespace Day13
             string[] packet1String = ListToString(packet1.Substring(1, packet1.Length - 2));
             string[] packet2String = ListToString(packet2.Substring(1, packet2.Length - 2));
 
-            int counter = 0;
+            int packetStringIndex = 0;
 
             while (true)
             {
-                if (packet1String.Length == counter)
+                if (packet1String.Length == packetStringIndex)
                 {
-                    if (packet2String.Length == counter)
+                    if (packet2String.Length == packetStringIndex)
                     {
                         return null; // Both lists are equal in length and values.
                     }
@@ -170,25 +172,30 @@ namespace Day13
                     }
                 }
                 
-                if (packet2String.Length == counter)
+                if (packet2String.Length == packetStringIndex)
                 {
                     return false; // Right list ran out of items first.
                 }
 
-                bool? comparison = Compare(packet1String[counter], packet2String[counter]);
+                bool? comparison = Compare(packet1String[packetStringIndex], packet2String[packetStringIndex]);
                 if (comparison == true)
                 {
-                    return true;
+                    return true; // Inputs in right order
                 }
                 else if (comparison == false)
                 {
-                    return false;
+                    return false; // Inputs not in right order
                 }
 
-                counter++;
+                packetStringIndex++;
             }
         }
 
+        /// <summary>
+        /// Takes string representation of a list and splits it into individual list elements. 
+        /// </summary>
+        /// <param name="packetString"></param>
+        /// <returns>Array of strings that contains the elemets of list at top most level.</returns>
         public static string[] ListToString(string packetString)
         {
             // Console.WriteLine($"ListToString: {packetString}");
@@ -197,7 +204,7 @@ namespace Day13
 
             for (int startIndex = 0; startIndex < packetString.Length; startIndex++)
             {
-                int count = 0;
+                int count = 0; // Used to track nesting levels
                 int endIndex = startIndex;
 
                 while (true)
@@ -209,11 +216,13 @@ namespace Day13
                         break;
                     }
 
+                    // Start of nested list
                     if (packetString[endIndex] == '[')
                     {
                         count++;
                     }
 
+                    // End of nested list
                     if (packetString[endIndex] == ']')
                     {
                         count--;
