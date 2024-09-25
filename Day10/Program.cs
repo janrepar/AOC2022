@@ -79,11 +79,13 @@ namespace Day10
                 {
                     for (int i = 0; i < 2; i++)
                     {
+                        // Move line down each 40th circle
                         if (cycle == 40)
                         {
                             cycle = 0;
                             Console.WriteLine();
                         }
+
 
                         if (spritePos[0] == cycle || spritePos[1] == cycle || spritePos[2] == cycle)
                         {
@@ -96,6 +98,7 @@ namespace Day10
                             cycle++;
                         }
 
+                        // Move sprite position according to addx instruction
                         if (i == 1)
                         {
                             spritePos[0] += int.Parse(instructions[1]);
@@ -106,6 +109,7 @@ namespace Day10
                 }
                 else
                 {
+                    // Move line down each 40th circle
                     if (cycle == 40)
                     {
                         cycle = 0;

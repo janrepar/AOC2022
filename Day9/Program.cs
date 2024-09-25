@@ -151,7 +151,7 @@
 
                     for (int j = 1; j < ropeCoords.Length; j++)
                     {
-                        // j is tail and j - 1 is head at each iteration of the loop to the end of the rope 
+                        // j is "tail" and j - 1 is "head" at each iteration of the loop to the end of the rope 
                         if (Math.Abs(ropeCoords[j - 1].X - ropeCoords[j].X) == 2 || Math.Abs(ropeCoords[j - 1].Y - ropeCoords[j].Y) == 2)
                         {
                             if (ropeCoords[j - 1].X != ropeCoords[j].X)

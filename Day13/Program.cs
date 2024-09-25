@@ -8,7 +8,7 @@ namespace Day13
     {
         static void Main(string[] args)
         {
-            // Part1();
+            Part1();
             Part2();
         }
 
@@ -72,14 +72,20 @@ namespace Day13
             input.Sort((a, b) =>
             {
                 bool? result = Compare(a, b);
+
+                // a is less than b and should come before b
                 if (result == true)
                 {
                     return -1;
                 }
+
+                // b is less than a and should come before a
                 if (result == false)
                 {
                     return 1;
                 }
+
+                // a and b are equal, both stay at pos they are at
                 return 0; 
             });
 
@@ -100,10 +106,18 @@ namespace Day13
             Console.WriteLine("\nDecoder key: " + result);
         }
 
+        /// <summary>
+        /// Function to compare two packets according to AOC2022 Day 13 rules.
+        /// </summary>
+        /// <param name="packet1"></param>
+        /// <param name="packet2"></param>
+        /// <returns>True if inputs are in the right order. False if inputs are not in the right order. Null if packets are equal.</returns>
         public static bool? Compare(string packet1, string packet2)
         {
             // Console.WriteLine($"Compare: {packet1} | {packet2}");
 
+            // Handling mixed types
+            // Wraps the packet in [] if one of the packets doesn't start with [
             if (packet1[0] == '[' && packet2[0] != '[')
             {
                 return Compare(packet1, "[" + packet2 + "]");
@@ -114,8 +128,10 @@ namespace Day13
                 return Compare("[" + packet1 + "]", packet2);
             }
 
+            // Comparing numbers
             if (packet1[0] != '[' && packet2[0] != '[')
             {
+                // Convert to integer and compare
                 int packet1Num = int.Parse(packet1);
                 int packet2Num = int.Parse(packet2);
 
@@ -133,6 +149,8 @@ namespace Day13
                 }
             }
 
+            // Recursive comparison for lists
+            // Substring removes first [ and last ] -> ListToString needs to get just the contents of the list as a parameter
             string[] packet1String = ListToString(packet1.Substring(1, packet1.Length - 2));
             string[] packet2String = ListToString(packet2.Substring(1, packet2.Length - 2));
 
@@ -144,17 +162,17 @@ namespace Day13
                 {
                     if (packet2String.Length == counter)
                     {
-                        return null;
+                        return null; // Both lists are equal in length and values.
                     }
                     else
                     {
-                        return true;
+                        return true; // Left list ran out of items first.
                     }
                 }
                 
                 if (packet2String.Length == counter)
                 {
-                    return false;
+                    return false; // Right list ran out of items first.
                 }
 
                 bool? comparison = Compare(packet1String[counter], packet2String[counter]);
