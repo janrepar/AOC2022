@@ -41,11 +41,13 @@ namespace Day18
 
         public override bool Equals(object obj)
         {
-            if (obj is Coordinates other)
+            if (obj == null || GetType() != obj.GetType())
             {
-                return X == other.X && Y == other.Y && Z == other.Z;
+                return false;
             }
-            return false;
+
+            Coordinates other = (Coordinates)obj;
+            return X == other.X && Y == other.Y && Z == other.Z;
         }
 
         public override int GetHashCode()

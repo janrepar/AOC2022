@@ -45,7 +45,8 @@ namespace Day18
             int maxY = this.Cubes.Max(c => c.Y) + 1;
             int minZ = this.Cubes.Min(c => c.Z) - 1;
             int maxZ = this.Cubes.Max(c => c.Z) + 1;
-          
+            
+            // Breadth-first search
             HashSet<Coordinates> reachableAir = new HashSet<Coordinates>();
             Queue<Coordinates> queue = new Queue<Coordinates>();
             queue.Enqueue(new Coordinates(minX, minY, minZ));
@@ -86,7 +87,7 @@ namespace Day18
                 }
             }
 
-            // Calculate the exterior surface area
+            // Calculate the exterior surface area once reachable air has been identified
             int exteriorSurfaceArea = 0;
 
             foreach (Coordinates coord in this.Cubes)
@@ -122,6 +123,7 @@ namespace Day18
             return coords;
         }
 
+        // Adds cube coordinates to Cubes HashSet
         public void ParseInput(List<string> input)
         {
             foreach (string line in input)

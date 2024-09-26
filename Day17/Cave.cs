@@ -47,14 +47,14 @@ namespace Day17
 
                     if (input[index] == '>' && rock.RockShape.Max(c => c.X) < 6)
                     {
-                        if (rock.RockShape.All(c => c.X < 6 && !cave.Floor.Contains(c.Right))) // Check for collision
+                        if (rock.RockShape.All(c => c.X < 6 && !cave.Floor.Contains(c.Right))) // Check for collision with cave floor
                         {
                             rock.RockFall('>');  // Move rock to the right
                         }
                     }
                     else if (input[index] == '<' && rock.RockShape.Min(c => c.X) > 0)
                     {
-                        if (rock.RockShape.All(c => c.X > 0 && !cave.Floor.Contains(c.Left))) // Check for collision
+                        if (rock.RockShape.All(c => c.X > 0 && !cave.Floor.Contains(c.Left))) // Check for collision with cave floor
                         {
                             rock.RockFall('<');  // Move rock to the left
                         }
@@ -64,7 +64,7 @@ namespace Day17
 
                     index++;
 
-                    if (rock.RockShape.Any(c => cave.Floor.Contains(c.Down)))
+                    if (rock.RockShape.Any(c => cave.Floor.Contains(c.Down))) // Check for collision with floor or fallen rock
                     {
                         foreach (var c in rock.RockShape)
                         {

@@ -89,6 +89,7 @@ namespace Day16
                 // Determine which valves are opened by the player based on the bitmask `i` (iterate over each valve and assign it to p or e)
                 for (int j = 0; j < totalValveCount; j++)
                 {
+                    // Checks if j-th bit of the integer i is set (1 or 0)
                     if ((i & (1 << j)) != 0) // Shifts one bit to the left by j positions and if i & shifted 1 (using bitwise and) is not 0 player opens valve 
                     {
                         playerOpenedValves.Add(valveNames[j]);
